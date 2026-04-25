@@ -65,15 +65,52 @@ class TextProcessor(DataProcessor):
         return (False)
 
     def ingest(self, data: typing.Any) -> None:
-        pass
-		
-
+        if self.validate(data):
+            if isinstance(data, list):
+                for nodo in data:
+                    self.list_data.append(str(nodo))
+            else:
+                self.list_data.append(str(data))
+        else:
+            raise Exception("Improper text data")
+        
+class LogProcessor(DataProcessor):
+    def __init__(self):
+        super().__init__()
+    
+    def validate(self, data: typing.Any) -> bool:
+        if isinstance(data, dict):
+            return (True)
+        if isinstance(data, list):
+            for nodo in data:
+                if not isinstance(nodo, dict):
+                    return (False)
+            return (True)
+        return (False)
+    
+    def ingest(self, data: typing.Any) -> bool:
+        try:
+            if self.validate(data):
+                if isinstance(data, list):
+                    for nodo in data:
+                        self.list_data.append(f"{str(nodo['log_level'])}: {str(nodo['log_message'])}")
+                else:
+                    self.list_data.append(f"{str(nodo['log_level'])}: {str(nodo['log_message'])}")
+            else:
+                raise Exception("Improper log data")
+        except Exception:
+            raise Exception("Improper log data")
 
 def main():
     numeric = NumericProcessor()
     list_numeric = [1,2,3,4,5]
     text = TextProcessor()
     list_text = ["Hello", "Nexus", "World"]
+    log = LogProcessor()
+    list_log = [
+        {'log_level': 'NOTICE', 'log_message': 'Connection to server'},
+        {'log_level': 'ERROR', 'log_messa': 'Unauthorized access!!'}
+    ]
 
 
     print("=== Code Nexus - Data Processor ===")
@@ -103,6 +140,17 @@ def main():
         print(f" Text value {response[0]}: {response[1]}")
     print()
     print("Testing Log Processor...")
+    try:
+        print(f" Trying to validate input 'Hello': {log.validate('Hello')}")
+        print(f" Processing data: {list_log}")
+        log.ingest(list_log)
+        print(f" Extracting 2 values...")
+        for i in range(2):
+            response = log.output()
+            print(f"Log entry {response[0]}: {response[1]}")
+    except Exception as e:
+        print(f"{e}")
+
     
 
 	
