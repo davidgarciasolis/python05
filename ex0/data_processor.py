@@ -7,7 +7,7 @@ class DataProcessor(abc.ABC):
     rank: int
     list_data: list[str]
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.list_data = []
         self.rank = -1
 
@@ -27,7 +27,7 @@ class DataProcessor(abc.ABC):
 
 
 class NumericProcessor(DataProcessor):
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__()
 
     def validate(self, data: typing.Any) -> bool:
@@ -40,7 +40,8 @@ class NumericProcessor(DataProcessor):
             return (True)
         return (False)
 
-    def ingest(self, data: typing.Any) -> None:
+    def ingest(self, data: int | float | list[int]
+               | list[float] | list[int | float]) -> None:
         if self.validate(data):
             if isinstance(data, list):
                 for nodo in data:
@@ -52,7 +53,7 @@ class NumericProcessor(DataProcessor):
 
 
 class TextProcessor(DataProcessor):
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__()
 
     def validate(self, data: typing.Any) -> bool:
@@ -65,7 +66,7 @@ class TextProcessor(DataProcessor):
             return (True)
         return (False)
 
-    def ingest(self, data: typing.Any) -> None:
+    def ingest(self, data: str | list[str]) -> None:
         if self.validate(data):
             if isinstance(data, list):
                 for nodo in data:
@@ -77,7 +78,7 @@ class TextProcessor(DataProcessor):
 
 
 class LogProcessor(DataProcessor):
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__()
 
     def validate(self, data: typing.Any) -> bool:
@@ -90,7 +91,7 @@ class LogProcessor(DataProcessor):
             return (True)
         return (False)
 
-    def ingest(self, data: typing.Any) -> None:
+    def ingest(self, data: dict[str, str] | list[dict[str, str]]) -> None:
         if self.validate(data):
             try:
                 if isinstance(data, list):
@@ -106,7 +107,7 @@ class LogProcessor(DataProcessor):
             raise ValueError("Improper log data")
 
 
-def main():
+def main() -> None:
     numeric = NumericProcessor()
     list_numeric = [1, 2, 3, 4, 5]
     text = TextProcessor()
