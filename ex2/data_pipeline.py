@@ -18,6 +18,15 @@ class ExportCSV(ExportPlugin):
         print(result)
 
 
+class ExportJSON(ExportPlugin):
+    def process_output(self, data: list[tuple[int,str]]) -> None:
+        result = dict()
+        for nodo in data:
+            result[f"item_{nodo[0]}"] = nodo[1]
+        print("JSON Output:")
+        print(result)
+
+
 class DataProcessor(abc.ABC):
     rank: int
     list_data: list[str]
@@ -192,7 +201,19 @@ def main() -> None:
     data: list[typing.Any] = []
     for nodo in list_data:
         data.append(nodo)
+    list_number2 = [42, 21, 32, 42, 64,22,2]
+    list_text2= ["I love AI", "LMs are wonderful", "Stay healthy", "World hello"]
+    list_log2 = [
+        {'log_level': 'ERROR',
+         'log_message': '500 server crash'},
+        {'log_level': 'NOTICE', 'log_message': 'Certificate expires in 10 days'}
+    ]
+    list_data2 = list_number2, list_text2, list_log2
+    data2: list[typing.Any] = []
+    for nodo in list_data2:
+        data2.append(nodo)
     exportCSV = ExportCSV()
+    exportJSON = ExportJSON()
     print("=== Code Nexus - Data Pipeline ===")
     print()
     print("Initialize Data Stream...")
@@ -211,45 +232,14 @@ def main() -> None:
     print()
     print("Send 3 processed data from each processor to a CSV plugin:")
     stream.output_pipeline(3, exportCSV)
-
-
-
-
-
-
-
-
-
-
-
-
-"""
-    name_proces = f"{numeric.__class__.__name__}"
-    name_proces = name_proces.replace("Processor", " Processor")
-    print(f"Registering {name_proces}")
-    stream.register_processor(numeric)
     print()
-    print(f"Send first batch of data on stream: {data}")
-    stream.process_stream(data)
     stream.print_processors_stats()
     print()
-    print("Registering other data processors")
-    stream.register_processor(text)
-    stream.register_processor(log)
-    print("Send the same batch again")
-    stream.process_stream(data)
-    stream.print_processors_stats()
+    print("Send 5 processed data from each processor to a JSON plugin:")
+    stream.process_stream(data2)
+    stream.output_pipeline(5, exportJSON)
     print()
-    print("Consume some elements from the data processors: "
-          "Numeric 3, Text 2, Log 1")
-    stream.list_proc[0].output()
-    stream.list_proc[0].output()
-    stream.list_proc[0].output()
-    stream.list_proc[1].output()
-    stream.list_proc[1].output()
-    stream.list_proc[2].output()
     stream.print_processors_stats()
-"""
 
 
 if __name__ == "__main__":
