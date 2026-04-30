@@ -5,7 +5,7 @@ import typing
 
 class ExportPlugin(typing.Protocol):
     @abc.abstractmethod
-    def process_output(self,data:list[tuple[int,str]]) -> None:
+    def process_output(self, data: list[tuple[int, str]]) -> None:
         pass
 
 
@@ -19,7 +19,7 @@ class ExportCSV(ExportPlugin):
 
 
 class ExportJSON(ExportPlugin):
-    def process_output(self, data: list[tuple[int,str]]) -> None:
+    def process_output(self, data: list[tuple[int, str]]) -> None:
         result = dict()
         for nodo in data:
             result[f"item_{nodo[0]}"] = nodo[1]
@@ -171,11 +171,9 @@ class DataStream():
         else:
             print("No processor found, no data")
 
-
     def output_pipeline(self, nb: int, plugin: ExportPlugin) -> None:
-        list_output: list[tuple[int,str]] = list()
         for proc in self.list_proc:
-            list_output: list[tuple[int,str]] = list()
+            list_output: list[tuple[int, str]] = list()
             for i in range(nb):
                 try:
                     list_output.append(proc.output())
@@ -201,17 +199,19 @@ def main() -> None:
     data: list[typing.Any] = []
     for nodo in list_data:
         data.append(nodo)
-    list_number2 = [42, 21, 32, 42, 64,22,2]
-    list_text2= ["I love AI", "LMs are wonderful", "Stay healthy", "World hello"]
+    list_number2 = [42, 21, 32, 42, 64, 22, 2]
+    list_text2 = ["I love AI", "LMs are wonderful",
+                  "Stay healthy", "World hello"]
     list_log2 = [
         {'log_level': 'ERROR',
          'log_message': '500 server crash'},
-        {'log_level': 'NOTICE', 'log_message': 'Certificate expires in 10 days'}
+        {'log_level': 'NOTICE',
+         'log_message': 'Certificate expires in 10 days'}
     ]
     list_data2 = list_number2, list_text2, list_log2
     data2: list[typing.Any] = []
-    for nodo in list_data2:
-        data2.append(nodo)
+    for nodo2 in list_data2:
+        data2.append(nodo2)
     exportCSV = ExportCSV()
     exportJSON = ExportJSON()
     print("=== Code Nexus - Data Pipeline ===")

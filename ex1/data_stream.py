@@ -154,7 +154,7 @@ def main() -> None:
     log = LogProcessor()
     list_numeric = [3.14, -1, 2.71]
     uni_numeric = 42
-    uni_text:str = "Hello world"
+    uni_text: str = "Hello world"
     list_text = ['Hi', 'five']
     list_log = [
         {'log_level': 'WARNING',
