@@ -11,9 +11,9 @@ class ExportPlugin(typing.Protocol):
 
 class ExportCSV(ExportPlugin):
     def process_output(self, data: list[tuple[int, str]]) -> None:
-        result = ""
-        for nodo in data:
-            result += nodo[1] + ","
+        result = data[0][1]
+        for nodo in data[1:]:
+            result += "," + nodo[1]
         print("CSV Output:")
         print(result)
 
@@ -190,7 +190,7 @@ def main() -> None:
     log = LogProcessor()
     list_numeric = [3.14, -1, 2.71]
     uni_numeric = 42
-    uni_text = ["Hello world"]
+    uni_text = "Hello world"
     list_text = ['Hi', 'five']
     list_log = [
         {'log_level': 'WARNING',
