@@ -125,7 +125,7 @@ def main() -> None:
     print(f" Trying to validate input 'Hello': {numeric.validate('hello')}")
     print("Test invalid ingestion of string 'foo' without prior validation: ")
     try:
-        numeric.ingest("foo")
+        numeric.ingest(42)
     except Exception as e:
         print(f"Got exception: {e}")
     print(f"Processing data: {list_numeric}")
